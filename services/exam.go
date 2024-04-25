@@ -23,41 +23,42 @@ func (s *service) TaxCalculations(ctx context.Context, income float64, wht float
 	}
 	taxableIncome -= models.PersonalDeductionValue
 
-	type TaxLevel struct {
-		Amount float64 `json:"amount"`
+	levels := []models.TaxBracket{
+		{"0-150,000", 0},
+		{"150,001-500,000", 0},
+		{"500,001-1,000,000", 0},
+		{"1,000,001-2,000,000", 0},
+		{"2,000,001 ขึ้นไป", 0},
 	}
+	totalTax := 0.0
 
-	var totalTax float64
-	var taxLevels []TaxLevel
-
-	taxLevels = append(taxLevels, TaxLevel{})
 	if taxableIncome > 150000 {
 		nextLevel := min(taxableIncome, 500000) - 150000
-		taxLevels = append(taxLevels, TaxLevel{Amount: nextLevel * 0.10})
+		totalTax += nextLevel * 0.10
+		levels[1].Tax = nextLevel * 0.10
 	}
 	if taxableIncome > 500000 {
 		nextLevel := min(taxableIncome, 1000000) - 500000
-		taxLevels = append(taxLevels, TaxLevel{Amount: nextLevel * 0.15})
+		totalTax += nextLevel * 0.15
+		levels[2].Tax = nextLevel * 0.15
 	}
 	if taxableIncome > 1000000 {
 		nextLevel := min(taxableIncome, 2000000) - 1000000
-		taxLevels = append(taxLevels, TaxLevel{Amount: nextLevel * 0.20})
+		totalTax += nextLevel * 0.20
+		levels[3].Tax = nextLevel * 0.20
 	}
 	if taxableIncome > 2000000 {
 		nextLevel := taxableIncome - 2000000
-		taxLevels = append(taxLevels, TaxLevel{Amount: nextLevel * 0.35})
+		totalTax += nextLevel * 0.35
+		levels[4].Tax = nextLevel * 0.35
 	}
 
-	for _, level := range taxLevels {
-		totalTax += level.Amount
-	}
 	totalTax -= wht
-	fmt.Println("totalTax: ", totalTax)
 	if totalTax < 0 {
 		return models.TaxResponse{Tax: 0, TaxRefund: totalTax * -1}, nil
 	}
 
-	return models.TaxResponse{Tax: totalTax}, nil
+	return models.TaxResponse{Tax: totalTax, TaxLevel: levels}, nil
 }
 
 func DeductTaxAllowances(allowances []models.Allowance, taxableIncome *float64) error {
@@ -91,7 +92,6 @@ func IsValidAllowanceType(t string) error {
 }
 
 func IsValidAllowanceValue(allowanceType string, value, income float64) error {
-	fmt.Println("value: ", value, "income: ", income, "allowanceType: ", allowanceType)
 	var errMsg string
 	switch allowanceType {
 	case models.KReceiptType:
