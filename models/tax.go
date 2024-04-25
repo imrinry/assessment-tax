@@ -28,6 +28,5 @@ type TaxBracket struct {
 }
 
 type AdminSettings struct {
-	PersonalDeduction float64 `json:"personalDeduction"`
-	KReceipt          float64 `json:"kReceipt"`
+	Amount float64 `json:"amount"`
 }

@@ -17,12 +17,24 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func initDB(dbURL string) (*sqlx.DB, error) {
+func InitializeDatabase(dbURL string) (*sqlx.DB, error) {
 	db, err := sqlx.Connect("postgres", dbURL)
 	if err != nil {
-		logs.Error(err)
 		return nil, err
 	}
+
+	_, err = db.Exec(`
+	CREATE TABLE IF NOT EXISTS deductions (
+		id SERIAL PRIMARY KEY,
+		name TEXT,
+		value FLOAT
+	);
+	`)
+
+	if err != nil {
+		return nil, err
+	}
+
 	return db, nil
 }
 
@@ -39,7 +51,7 @@ func main() {
 		panic("DATABASE_URL must be set")
 	}
 
-	db, err := initDB(dbURL)
+	db, err := InitializeDatabase(dbURL)
 	if err != nil {
 		panic(err)
 	}
@@ -54,6 +66,9 @@ func main() {
 	})
 
 	e.POST("/tax/calculations", handlers.TaxCalculations)
+
+	e.Use(BasicAuthMiddleware)
+	e.POST("/admin/deductions/personal", handlers.DeductionPersonalSetting)
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)

@@ -9,6 +9,7 @@ import (
 
 type Services interface {
 	TaxCalculations(ctx context.Context, income float64, wht float64, allowances []models.Allowance) (models.TaxResponse, error)
+	DeductionPersonalSetting(ctx context.Context, amount float64) (interface{}, error)
 }
 
 type service struct {
