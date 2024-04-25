@@ -3,11 +3,11 @@ package services
 import (
 	"context"
 
-	"github.com/imrinry/assessment-tax/errs"
 	"github.com/imrinry/assessment-tax/models"
 )
 
 func (s *service) TaxCalculations(ctx context.Context, income float64, wht float64, allowances []models.Allowance) (float64, error) {
+
 	taxableIncome := income
 	taxableIncome -= 60000
 	type TaxLevel struct {
@@ -38,21 +38,6 @@ func (s *service) TaxCalculations(ctx context.Context, income float64, wht float
 	for _, level := range taxLevels {
 		totalTax += level.Amount
 	}
-	totalTax -= wht
+	// totalTax -= wht
 	return totalTax, nil
-}
-	if err != nil {
-		logs.Error(err)
-		return nil, errs.NewUnexpectedError()
-	}
-
-	// number := 200
-	// if number > 200 {
-	// 	return nil, errors.New("number is gte 200")
-	// }
-	state := true
-	if state {
-		return nil, errs.NewNotFoundError("")
-	}
-	return data, nil
 }
