@@ -7,8 +7,7 @@ import (
 )
 
 type Handlers interface {
-	Index(c echo.Context) error
-	ExamHandler(c echo.Context) error
+	TaxCalculations(c echo.Context) error
 }
 
 type handler struct {
