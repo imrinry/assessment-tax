@@ -38,6 +38,6 @@ func (s *service) TaxCalculations(ctx context.Context, income float64, wht float
 	for _, level := range taxLevels {
 		totalTax += level.Amount
 	}
-	// totalTax -= wht
+	totalTax -= wht
 	return totalTax, nil
 }
