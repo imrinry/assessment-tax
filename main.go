@@ -8,8 +8,10 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/imrinry/assessment-tax/handlers"
 	"github.com/imrinry/assessment-tax/logs"
 	"github.com/imrinry/assessment-tax/repositories"
+	"github.com/imrinry/assessment-tax/services"
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo/v4"
 	_ "github.com/lib/pq"
@@ -43,13 +45,15 @@ func main() {
 	}
 
 	repo := repositories.New(db)
-	_, err = repo.ExamRepo(context.Background())
-	fmt.Println("err", err)
+	services := services.New(repo)
+	handlers := handlers.New(services)
 
 	e := echo.New()
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, Go Bootcamp!")
 	})
+
+	e.POST("/tax/calculations", handlers.TaxCalculations)
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)
