@@ -8,7 +8,7 @@ import (
 )
 
 type Services interface {
-	TaxCalculations(ctx context.Context, income float64, wht float64, allowances []models.Allowance) (float64, error)
+	TaxCalculations(ctx context.Context, income float64, wht float64, allowances []models.Allowance) (models.TaxResponse, error)
 }
 
 type service struct {

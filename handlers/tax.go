@@ -13,10 +13,10 @@ func (h *handler) TaxCalculations(c echo.Context) error {
 		return c.String(http.StatusBadRequest, "Invalid request body")
 	}
 
-	tax, err := h.s.TaxCalculations(c.Request().Context(), req.TotalIncome, req.WHT, req.Allowances)
+	data, err := h.s.TaxCalculations(c.Request().Context(), req.TotalIncome, req.WHT, req.Allowances)
 	if err != nil {
 		return HandleError(c, err)
 	}
-	resp := models.TaxResponse{Tax: tax}
-	return c.JSON(http.StatusOK, resp)
+
+	return c.JSON(http.StatusOK, data)
 }

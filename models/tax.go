@@ -1,5 +1,10 @@
 package models
 
+const PersonalDeductionValue = 60000.0
+const KReceiptType = "k-receipt"
+const DonationType = "donation"
+const WhtType = "wht"
+
 type TaxRequest struct {
 	TotalIncome float64     `json:"totalIncome"`
 	WHT         float64     `json:"wht"`
@@ -12,8 +17,9 @@ type Allowance struct {
 }
 
 type TaxResponse struct {
-	Tax      float64      `json:"tax"`
-	TaxLevel []TaxBracket `json:"taxLevel,omitempty"`
+	Tax       float64      `json:"tax"`
+	TaxLevel  []TaxBracket `json:"taxLevel,omitempty"`
+	TaxRefund float64      `json:"taxRefund,omitempty"`
 }
 
 type TaxBracket struct {
