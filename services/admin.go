@@ -23,3 +23,19 @@ func (s *service) DeductionPersonalSetting(ctx context.Context, amount float64) 
 
 	return s.r.UpdateDeductionSetting(ctx, keyName, amount)
 }
+func (s *service) DeductionkReceiptSetting(ctx context.Context, amount float64) (interface{}, error) {
+	const keyName = "kReceipt"
+	if amount < 0 {
+		return nil, errs.NewValidationError("kReceipt must be greater than 0")
+	}
+	if amount > 100000 {
+		return nil, errs.NewValidationError("kReceipt must be less than  or equal to 100000")
+	}
+	_, err := s.r.UpdateDeductionSetting(ctx, keyName, amount)
+	if err != nil {
+		logs.Error(err)
+		return nil, errs.NewUnexpectedError()
+	}
+
+	return s.r.UpdateDeductionSetting(ctx, keyName, amount)
+}

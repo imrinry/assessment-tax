@@ -64,11 +64,11 @@ func main() {
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, Go Bootcamp!")
 	})
+	e.Group("/admin").Use(BasicAuthMiddleware)
+	e.POST("/admin/deductions/personal", handlers.DeductionPersonalSetting)
+	e.POST("/admin/deductions/k-receipt", handlers.DeductionkReceiptSetting)
 
 	e.POST("/tax/calculations", handlers.TaxCalculations)
-
-	e.Use(BasicAuthMiddleware)
-	e.POST("/admin/deductions/personal", handlers.DeductionPersonalSetting)
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)

@@ -9,6 +9,7 @@ import (
 type Handlers interface {
 	TaxCalculations(c echo.Context) error
 	DeductionPersonalSetting(c echo.Context) error
+	DeductionkReceiptSetting(c echo.Context) error
 }
 
 type handler struct {
