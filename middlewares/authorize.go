@@ -1,6 +1,4 @@
-// middleware.go
-
-package main
+package middlewares
 
 import (
 	"net/http"
@@ -8,9 +6,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// BasicAuth middleware
-
-// Middleware function to configure basic authentication
 func BasicAuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(ctx echo.Context) error {
 		username, password, ok := ctx.Request().BasicAuth()

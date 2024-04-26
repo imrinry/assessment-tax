@@ -10,6 +10,7 @@ import (
 
 	"github.com/imrinry/assessment-tax/handlers"
 	"github.com/imrinry/assessment-tax/logs"
+	"github.com/imrinry/assessment-tax/middlewares"
 	"github.com/imrinry/assessment-tax/repositories"
 	"github.com/imrinry/assessment-tax/services"
 	"github.com/jmoiron/sqlx"
@@ -64,11 +65,12 @@ func main() {
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, Go Bootcamp!")
 	})
-	e.Group("/admin").Use(BasicAuthMiddleware)
+	e.Group("/admin").Use(middlewares.BasicAuthMiddleware)
 	e.POST("/admin/deductions/personal", handlers.DeductionPersonalSetting)
 	e.POST("/admin/deductions/k-receipt", handlers.DeductionkReceiptSetting)
 
 	e.POST("/tax/calculations", handlers.TaxCalculations)
+	e.POST("tax/calculations/upload-csv", handlers.CsvFileTaxCalculations)
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)
