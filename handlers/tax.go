@@ -58,7 +58,7 @@ func (h *handler) CsvFileTaxCalculations(c echo.Context) error {
 			HandleError(c, errs.NewValidationError(fmt.Sprintf("invalid donation: %s", person.Donation)))
 		}
 		// validatedList = append(validatedList, models.ListForCalculateTax{TotalIncome: totalIncome, Wht: wht, Donation: donation})
-		reqList = append(reqList, models.TaxRequest{TotalIncome: totalIncome, WHT: wht, Allowances: []models.Allowance{models.Allowance{AllowanceType: models.DonationType, Amount: donation}}})
+		reqList = append(reqList, models.TaxRequest{TotalIncome: totalIncome, WHT: wht, Allowances: []models.Allowance{{AllowanceType: models.DonationType, Amount: donation}}})
 	}
 	results := make([]map[string]interface{}, 0)
 	for _, v := range reqList {
