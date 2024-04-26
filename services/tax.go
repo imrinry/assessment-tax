@@ -19,7 +19,6 @@ func (s *service) TaxCalculations(ctx context.Context, income float64, wht float
 	err := DeductTaxAllowances(allowances, &taxableIncome)
 	if err != nil {
 		return models.TaxResponse{}, err
-
 	}
 	taxableIncome -= models.PersonalDeductionValue
 
@@ -113,7 +112,7 @@ func IsValidAllowanceValue(allowanceType string, value, income float64) error {
 			errMsg = "wht value must be less than income"
 		}
 	default:
-		errMsg = "invalid allowance type"
+		errMsg = "invalid allowance value"
 	}
 
 	if errMsg != "" {
