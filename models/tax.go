@@ -30,3 +30,15 @@ type TaxBracket struct {
 type AdminSettings struct {
 	Amount float64 `json:"amount"`
 }
+
+type ListFile struct {
+	TotalIncome string `csv:"totalIncome"`
+	Wht         string `csv:"wht"`
+	Donation    string `csv:"donation"`
+}
+
+type ListForCalculateTax struct {
+	TotalIncome float64 `csv:"totalIncome"`
+	Wht         float64 `csv:"wht"`
+	Donation    float64 `csv:"donation"`
+}

@@ -31,7 +31,10 @@ func (s *service) TaxCalculations(ctx context.Context, income float64, wht float
 		{"2,000,001 ขึ้นไป", 0},
 	}
 	totalTax := 0.0
-
+	if taxableIncome > 0 && taxableIncome <= 150000 {
+		totalTax = 0
+		levels[0].Tax = totalTax
+	}
 	if taxableIncome > 150000 {
 		nextLevel := min(taxableIncome, 500000) - 150000
 		totalTax += nextLevel * 0.10
