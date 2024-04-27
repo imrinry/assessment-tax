@@ -29,13 +29,22 @@ func InitializeDatabase(dbURL string) (*sqlx.DB, error) {
 		id SERIAL PRIMARY KEY,
 		name TEXT,
 		value FLOAT
-	);
+	)
 	`)
 
 	if err != nil {
 		return nil, err
 	}
 
+	_, err = db.Exec(`
+	INSERT INTO deductions (name, value) VALUES
+	('personalDeduction', 0),
+	('kReceipt', 0)
+	ON CONFLICT DO NOTHING;
+`)
+	if err != nil {
+		return nil, err
+	}
 	return db, nil
 }
 

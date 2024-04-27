@@ -23,11 +23,11 @@ func (s *service) TaxCalculations(ctx context.Context, income float64, wht float
 	taxableIncome -= models.PersonalDeductionValue
 
 	levels := []models.TaxBracket{
-		{"0-150,000", 0},
-		{"150,001-500,000", 0},
-		{"500,001-1,000,000", 0},
-		{"1,000,001-2,000,000", 0},
-		{"2,000,001 ขึ้นไป", 0},
+		{Level: "0-150,000", Tax: 0},
+		{Level: "150,001-500,000", Tax: 0},
+		{Level: "500,001-1,000,000", Tax: 0},
+		{Level: "1,000,001-2,000,000", Tax: 0},
+		{Level: "2,000,001 ขึ้นไป", Tax: 0},
 	}
 	totalTax := 0.0
 	if taxableIncome > 0 && taxableIncome <= 150000 {
