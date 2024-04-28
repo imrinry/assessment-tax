@@ -19,6 +19,7 @@ import (
 )
 
 func InitializeDatabase(dbURL string) (*sqlx.DB, error) {
+	fmt.Println("Database URL: ", dbURL)
 	db, err := sqlx.Connect("postgres", dbURL)
 	if err != nil {
 		return nil, err
@@ -58,7 +59,7 @@ func main() {
 	dbURL := os.Getenv("DATABASE_URL")
 	if dbURL == "" {
 		logs.Error("DATABASE_URL must be set")
-		panic("DATABASE_URL must be set")
+		panic(`DATABASE_URL must be set please run export DATABASE_URL="host=localhost port=5432 user=adminTax password=adminTax! dbname=ktaxes sslmode=disable"`)
 	}
 
 	db, err := InitializeDatabase(dbURL)
